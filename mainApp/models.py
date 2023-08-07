@@ -59,7 +59,7 @@ class Buyer(models.Model):
     pic = models.ImageField(upload_to="uploads/users",default="",null=True,blank=True)
     otp = models.IntegerField(default=None,blank=True,null=True)
 
-    
+     
     def __str__(self):
         return str(self.id)+" / "+self.name+" / "+self.username
     
