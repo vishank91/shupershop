@@ -312,7 +312,8 @@ def checkoutPage(Request):
                     "displayAmount":checkout.total,
                     "api_key":settings.RAZORPAY_API_KEY,
                     "order_id":paymentId,
-                    "User":buyer
+                    "User":buyer,
+                    "id":-1
                 })
         return render(Request,"checkout.html",{'buyer':buyer,'total':total,'shipping':shipping,'subtotal':subtotal,'cart':cart})
     except:
@@ -335,7 +336,8 @@ def rePaymentPage(Request,id):
             "displayAmount":checkout.total,
             "api_key":settings.RAZORPAY_API_KEY,
             "order_id":paymentId,
-            "User":buyer
+            "User":buyer,
+            "id":id
         })
     except:
         return HttpResponseRedirect("/profile/")
