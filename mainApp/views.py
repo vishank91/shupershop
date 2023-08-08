@@ -299,7 +299,7 @@ def checkoutPage(Request):
                 Request.session['cart']={}
 
             if(mode=="COD"):
-                return HttpResponseRedirect('/confirmation/'+str(id)+"/")
+                return HttpResponseRedirect('/confirmation/'+str(checkout.id)+"/")
             else:
                 orderAmount = checkout.total*100
                 orderCurrency = "INR"
