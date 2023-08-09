@@ -3,6 +3,8 @@ from django.contrib.messages import success,error
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
 import razorpay
 
 from django.conf import settings
@@ -121,13 +123,14 @@ def shopPage(Request,mc,sc,br):
         products = Product.objects.filter(maincategory=Maincategory.objects.get(name=mc),subcategory=Subcategory.objects.get(name=sc),brand=Brand.objects.get(name=br)).order_by("-id").order_by("-id")    
     
     
-    
-    
-    
     maincategory = Maincategory.objects.all().order_by("-id")
     subcategory = Subcategory.objects.all().order_by("-id")
     brand = Brand.objects.all().order_by("-id")
-    return render(Request,"shop.html",{'products':products,'maincategory':maincategory,'subcategory':subcategory,'brand':brand,'mc':mc,'sc':sc,'br':br})
+
+    paginator = Paginator(products, 12)
+    page_number = Request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(Request,"shop.html",{'maincategory':maincategory,'subcategory':subcategory,'brand':brand,'mc':mc,'sc':sc,'br':br,'page_obj':page_obj})
 
 def searchPage(Request):
     if(Request.method=="POST"):
@@ -148,7 +151,11 @@ def searchPage(Request):
         maincategory = Maincategory.objects.all().order_by("-id")
         subcategory = Subcategory.objects.all().order_by("-id")
         brand = Brand.objects.all().order_by("-id")
-        return render(Request,"shop.html",{'products':products,'maincategory':maincategory,'subcategory':subcategory,'brand':brand,'mc':"All",'sc':"All",'br':"All"})        
+        
+        paginator = Paginator(products, 12)
+        page_number = Request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return render(Request,"shop.html",{'page_obj':page_obj,'maincategory':maincategory,'subcategory':subcategory,'brand':brand,'mc':"All",'sc':"All",'br':"All"})        
     else:
         return HttpResponseRedirect("/")
 
